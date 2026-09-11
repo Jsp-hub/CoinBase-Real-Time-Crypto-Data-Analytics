@@ -1,0 +1,130 @@
+name: coinbase-streaming
+
+x-kafka-common: &kafka-common
+  image: apache/kafka:4.3.1
+  restart: unless-stopped
+  networks:
+    - coinbase-streaming-network
+  environment: &kafka-common-environment
+    KAFKA_PROCESS_ROLES: broker,controller
+    KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+    KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1:9093,2@kafka-2:9093,3@kafka-3:9093
+    KAFKA_LISTENERS: PLAINTEXT://:19092,CONTROLLER://:9093,PLAINTEXT_HOST://:9092
+    KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+    KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+    CLUSTER_ID: 4L6g3nShT-eMCtK--X86sw
+    KAFKA_NUM_PARTITIONS: 3
+    KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+    KAFKA_MIN_INSYNC_REPLICAS: 2
+    KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+    KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+    KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 2
+    KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+    KAFKA_LOG_RETENTION_HOURS: 168
+    KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+  healthcheck:
+    test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:19092 >/dev/null 2>&1"]
+    interval: 10s
+    timeout: 10s
+    retries: 12
+    start_period: 30s
+
+services:
+  kafka-1-storage-init:
+    image: apache/kafka:4.3.1
+    user: "0:0"
+    entrypoint: ["chown", "-R", "1000:1000", "/tmp/kraft-combined-logs"]
+    volumes:
+      - kafka-1-data:/tmp/kraft-combined-logs
+    restart: "no"
+
+  kafka-2-storage-init:
+    image: apache/kafka:4.3.1
+    user: "0:0"
+    entrypoint: ["chown", "-R", "1000:1000", "/tmp/kraft-combined-logs"]
+    volumes:
+      - kafka-2-data:/tmp/kraft-combined-logs
+    restart: "no"
+
+  kafka-3-storage-init:
+    image: apache/kafka:4.3.1
+    user: "0:0"
+    entrypoint: ["chown", "-R", "1000:1000", "/tmp/kraft-combined-logs"]
+    volumes:
+      - kafka-3-data:/tmp/kraft-combined-logs
+    restart: "no"
+
+  kafka-1:
+    <<: *kafka-common
+    hostname: kafka-1
+    container_name: coinbase-kafka-1
+    ports:
+      - "29092:9092"
+    depends_on:
+      kafka-1-storage-init:
+        condition: service_completed_successfully
+    environment:
+      <<: *kafka-common-environment
+      KAFKA_NODE_ID: 1
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-1:19092,PLAINTEXT_HOST://localhost:29092
+    volumes:
+      - kafka-1-data:/tmp/kraft-combined-logs
+
+  kafka-2:
+    <<: *kafka-common
+    hostname: kafka-2
+    container_name: coinbase-kafka-2
+    ports:
+      - "39092:9092"
+    depends_on:
+      kafka-2-storage-init:
+        condition: service_completed_successfully
+    environment:
+      <<: *kafka-common-environment
+      KAFKA_NODE_ID: 2
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-2:19092,PLAINTEXT_HOST://localhost:39092
+    volumes:
+      - kafka-2-data:/tmp/kraft-combined-logs
+
+  kafka-3:
+    <<: *kafka-common
+    hostname: kafka-3
+    container_name: coinbase-kafka-3
+    ports:
+      - "49092:9092"
+    depends_on:
+      kafka-3-storage-init:
+        condition: service_completed_successfully
+    environment:
+      <<: *kafka-common-environment
+      KAFKA_NODE_ID: 3
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-3:19092,PLAINTEXT_HOST://localhost:49092
+    volumes:
+      - kafka-3-data:/tmp/kraft-combined-logs
+
+  kafka-topic-initializer:
+    image: apache/kafka:4.3.1
+    container_name: coinbase-kafka-topic-initializer
+    networks:
+      - coinbase-streaming-network
+    depends_on:
+      kafka-1:
+        condition: service_healthy
+      kafka-2:
+        condition: service_healthy
+      kafka-3:
+        condition: service_healthy
+    volumes:
+      - ../kafka/create-topics.sh:/opt/project/create-topics.sh:ro
+    entrypoint: ["/bin/sh", "/opt/project/create-topics.sh"]
+    restart: "no"
+
+networks:
+  coinbase-streaming-network:
+    name: coinbase-streaming-network
+
+volumes:
+  kafka-1-data:
+  kafka-2-data:
+  kafka-3-data:

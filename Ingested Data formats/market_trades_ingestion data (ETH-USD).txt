@@ -1,0 +1,822 @@
+[
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:28:44.504292842Z",
+    "sequence_num": 10,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949821",
+            "price": "2507.63",
+            "size": "0.05385998",
+            "time": "2026-09-06T21:28:44.414484Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949820",
+            "price": "2507.63",
+            "size": "0.00098623",
+            "time": "2026-09-06T21:28:44.414484Z",
+            "side": "BUY"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:28:45.40290631Z",
+    "sequence_num": 12,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949822",
+            "price": "2507.64",
+            "size": "0.00473752",
+            "time": "2026-09-06T21:28:45.262741Z",
+            "side": "SELL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:28:45.60264535Z",
+    "sequence_num": 13,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949823",
+            "price": "2507.64",
+            "size": "0.35847319",
+            "time": "2026-09-06T21:28:45.573829Z",
+            "side": "SELL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:28:47.30402498Z",
+    "sequence_num": 16,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949824",
+            "price": "2507.64",
+            "size": "0.09869838",
+            "time": "2026-09-06T21:28:47.204867Z",
+            "side": "SELL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:28:47.601130081Z",
+    "sequence_num": 17,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949825",
+            "price": "2507.64",
+            "size": "0.00384924",
+            "time": "2026-09-06T21:28:47.537421Z",
+            "side": "SELL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:28:48.102546551Z",
+    "sequence_num": 19,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949826",
+            "price": "2507.64",
+            "size": "0.0581294",
+            "time": "2026-09-06T21:28:48.058227Z",
+            "side": "SELL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:28:49.107218883Z",
+    "sequence_num": 21,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949827",
+            "price": "2507.53",
+            "size": "1.47",
+            "time": "2026-09-06T21:28:49.054548Z",
+            "side": "SELL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:28:49.403534903Z",
+    "sequence_num": 22,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949828",
+            "price": "2507.53",
+            "size": "0.00197397",
+            "time": "2026-09-06T21:28:49.335298Z",
+            "side": "SELL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:28:49.616232504Z",
+    "sequence_num": 23,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949871",
+            "price": "2506.97",
+            "size": "0.62135369",
+            "time": "2026-09-06T21:28:49.531764Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949870",
+            "price": "2506.97",
+            "size": "0.05016447",
+            "time": "2026-09-06T21:28:49.53173Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949869",
+            "price": "2506.97",
+            "size": "0.149",
+            "time": "2026-09-06T21:28:49.531052Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949868",
+            "price": "2506.97",
+            "size": "0.06",
+            "time": "2026-09-06T21:28:49.528778Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949867",
+            "price": "2506.97",
+            "size": "0.597",
+            "time": "2026-09-06T21:28:49.528766Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949866",
+            "price": "2506.63",
+            "size": "1.76581159",
+            "time": "2026-09-06T21:28:49.526422Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949865",
+            "price": "2506.63",
+            "size": "2.01329373",
+            "time": "2026-09-06T21:28:49.524425Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949864",
+            "price": "2506.63",
+            "size": "1.79617584",
+            "time": "2026-09-06T21:28:49.523892Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949863",
+            "price": "2506.63",
+            "size": "1.79617584",
+            "time": "2026-09-06T21:28:49.523294Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949862",
+            "price": "2506.46",
+            "size": "2.01229373",
+            "time": "2026-09-06T21:28:49.522403Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949861",
+            "price": "2506.5",
+            "size": "0.001",
+            "time": "2026-09-06T21:28:49.522403Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949860",
+            "price": "2506.6",
+            "size": "0.05",
+            "time": "2026-09-06T21:28:49.52082Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949859",
+            "price": "2506.64",
+            "size": "1.79942058",
+            "time": "2026-09-06T21:28:49.52082Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949858",
+            "price": "2506.65",
+            "size": "0.05984082",
+            "time": "2026-09-06T21:28:49.52082Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949857",
+            "price": "2506.69",
+            "size": "0.00041126",
+            "time": "2026-09-06T21:28:49.52082Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949856",
+            "price": "2506.8",
+            "size": "0.05",
+            "time": "2026-09-06T21:28:49.52082Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949855",
+            "price": "2506.8",
+            "size": "0.001",
+            "time": "2026-09-06T21:28:49.52082Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949854",
+            "price": "2506.87",
+            "size": "0.01",
+            "time": "2026-09-06T21:28:49.52082Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949853",
+            "price": "2507",
+            "size": "0.05",
+            "time": "2026-09-06T21:28:49.519146Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949852",
+            "price": "2507.01",
+            "size": "2.10978896",
+            "time": "2026-09-06T21:28:49.519146Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949851",
+            "price": "2507.01",
+            "size": "1.72859852",
+            "time": "2026-09-06T21:28:49.518953Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949850",
+            "price": "2507.01",
+            "size": "5.72183939",
+            "time": "2026-09-06T21:28:49.518696Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949849",
+            "price": "2507.01",
+            "size": "4.26453949",
+            "time": "2026-09-06T21:28:49.518641Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949848",
+            "price": "2507.01",
+            "size": "1.37783864",
+            "time": "2026-09-06T21:28:49.51693Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949847",
+            "price": "2507.05",
+            "size": "1.47751816",
+            "time": "2026-09-06T21:28:49.516929Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949846",
+            "price": "2507.13",
+            "size": "0.08378291",
+            "time": "2026-09-06T21:28:49.516929Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949845",
+            "price": "2507.13",
+            "size": "0.51450888",
+            "time": "2026-09-06T21:28:49.515283Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949844",
+            "price": "2507.05",
+            "size": "2.93426213",
+            "time": "2026-09-06T21:28:49.514837Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949843",
+            "price": "2507.06",
+            "size": "0.88207834",
+            "time": "2026-09-06T21:28:49.514837Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949842",
+            "price": "2507.05",
+            "size": "2.08506887",
+            "time": "2026-09-06T21:28:49.51411Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949841",
+            "price": "2507.05",
+            "size": "5.56018365",
+            "time": "2026-09-06T21:28:49.513718Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949840",
+            "price": "2507.05",
+            "size": "1.08497941",
+            "time": "2026-09-06T21:28:49.513661Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949839",
+            "price": "2507.05",
+            "size": "1.69511242",
+            "time": "2026-09-06T21:28:49.513661Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949838",
+            "price": "2507.05",
+            "size": "2.05731355",
+            "time": "2026-09-06T21:28:49.513609Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949837",
+            "price": "2507.07",
+            "size": "2.1903755",
+            "time": "2026-09-06T21:28:49.513609Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949836",
+            "price": "2507.1",
+            "size": "0.001",
+            "time": "2026-09-06T21:28:49.513609Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949835",
+            "price": "2507.2",
+            "size": "0.05",
+            "time": "2026-09-06T21:28:49.513468Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949834",
+            "price": "2507.21",
+            "size": "0.10087044",
+            "time": "2026-09-06T21:28:49.513468Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949833",
+            "price": "2507.4",
+            "size": "0.05",
+            "time": "2026-09-06T21:28:49.511949Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949832",
+            "price": "2507.4",
+            "size": "0.001",
+            "time": "2026-09-06T21:28:49.511949Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949831",
+            "price": "2507.48",
+            "size": "0.00000002",
+            "time": "2026-09-06T21:28:49.511949Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949830",
+            "price": "2507.51",
+            "size": "0.00000001",
+            "time": "2026-09-06T21:28:49.511949Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949829",
+            "price": "2507.52",
+            "size": "0.00000001",
+            "time": "2026-09-06T21:28:49.511949Z",
+            "side": "BUY"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:28:49.904826389Z",
+    "sequence_num": 24,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949872",
+            "price": "2506.91",
+            "size": "0.00000797",
+            "time": "2026-09-06T21:28:49.838353Z",
+            "side": "SELL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:28:50.10350753Z",
+    "sequence_num": 26,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949873",
+            "price": "2506.8",
+            "size": "0.00968823",
+            "time": "2026-09-06T21:28:49.979038Z",
+            "side": "SELL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:28:52.705658613Z",
+    "sequence_num": 29,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949878",
+            "price": "2506.71",
+            "size": "0.19939066",
+            "time": "2026-09-06T21:28:52.671069Z",
+            "side": "SELL"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949877",
+            "price": "2506.7",
+            "size": "1",
+            "time": "2026-09-06T21:28:52.671069Z",
+            "side": "SELL"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949876",
+            "price": "2506.69",
+            "size": "0.10087044",
+            "time": "2026-09-06T21:28:52.670663Z",
+            "side": "SELL"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949875",
+            "price": "2506.68",
+            "size": "1",
+            "time": "2026-09-06T21:28:52.670663Z",
+            "side": "SELL"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949874",
+            "price": "2506.64",
+            "size": "0.00000209",
+            "time": "2026-09-06T21:28:52.670663Z",
+            "side": "SELL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:28:53.302343092Z",
+    "sequence_num": 31,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949880",
+            "price": "2506.9",
+            "size": "0.10087044",
+            "time": "2026-09-06T21:28:53.174706Z",
+            "side": "SELL"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949879",
+            "price": "2506.9",
+            "size": "1",
+            "time": "2026-09-06T21:28:53.174706Z",
+            "side": "SELL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:28:55.203858088Z",
+    "sequence_num": 34,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949881",
+            "price": "2507.06",
+            "size": "0.00794344",
+            "time": "2026-09-06T21:28:55.097525Z",
+            "side": "SELL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:28:58.002277328Z",
+    "sequence_num": 38,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949882",
+            "price": "2506.93",
+            "size": "0.00376759",
+            "time": "2026-09-06T21:28:57.909228Z",
+            "side": "SELL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:28:59.001691901Z",
+    "sequence_num": 40,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949884",
+            "price": "2506.94",
+            "size": "0.00794",
+            "time": "2026-09-06T21:28:58.93471Z",
+            "side": "SELL"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949883",
+            "price": "2506.94",
+            "size": "0.99206",
+            "time": "2026-09-06T21:28:58.93471Z",
+            "side": "SELL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:29:00.102047347Z",
+    "sequence_num": 42,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949885",
+            "price": "2506.93",
+            "size": "0.01427154",
+            "time": "2026-09-06T21:29:00.030395Z",
+            "side": "SELL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:29:00.80526106Z",
+    "sequence_num": 43,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949886",
+            "price": "2506.92",
+            "size": "0.00215791",
+            "time": "2026-09-06T21:29:00.754044Z",
+            "side": "BUY"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:29:03.402472235Z",
+    "sequence_num": 47,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949888",
+            "price": "2506.85",
+            "size": "0.00032109",
+            "time": "2026-09-06T21:29:03.306208Z",
+            "side": "BUY"
+          },
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949887",
+            "price": "2506.85",
+            "size": "0.00065091",
+            "time": "2026-09-06T21:29:03.306208Z",
+            "side": "BUY"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:29:07.501578357Z",
+    "sequence_num": 52,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949889",
+            "price": "2506.85",
+            "size": "0.22866172",
+            "time": "2026-09-06T21:29:07.3758Z",
+            "side": "BUY"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "channel": "market_trades",
+    "timestamp": "2026-09-06T21:29:08.100692918Z",
+    "sequence_num": 54,
+    "events": [
+      {
+        "type": "update",
+        "trades": [
+          {
+            "product_id": "ETH-USD",
+            "trade_id": "840949890",
+            "price": "2506.81",
+            "size": "0.0032223",
+            "time": "2026-09-06T21:29:08.021059Z",
+            "side": "SELL"
+          }
+        ]
+      }
+    ]
+  }
+]

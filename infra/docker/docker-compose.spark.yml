@@ -1,0 +1,121 @@
+services:
+  spark-topic-initializer:
+    image: apache/kafka:4.3.1
+    networks:
+      - kafka-network
+    depends_on:
+      kafka-1:
+        condition: service_healthy
+      kafka-2:
+        condition: service_healthy
+      kafka-3:
+        condition: service_healthy
+    volumes:
+      - ../kafka/create-spark-topics.sh:/opt/project/create-spark-topics.sh:ro
+    entrypoint: ["/bin/bash", "/opt/project/create-spark-topics.sh"]
+    restart: "no"
+
+  spark-storage-initializer:
+    image: alpine:3.20
+    user: "0:0"
+    command:
+      [
+        "sh",
+        "-c",
+        "mkdir -p /opt/spark/checkpoints/ivy && chown -R 185:0 /opt/spark/checkpoints",
+      ]
+    volumes:
+      - spark-checkpoints:/opt/spark/checkpoints
+    restart: "no"
+
+  spark-master:
+    build:
+      context: ../..
+      dockerfile: infra/docker/spark/Dockerfile
+    image: coinbase-spark:local
+    container_name: coinbase-spark-master
+    command:
+      [
+        "/opt/spark/bin/spark-class",
+        "org.apache.spark.deploy.master.Master",
+        "--host",
+        "spark-master",
+        "--port",
+        "7077",
+        "--webui-port",
+        "8080",
+      ]
+    environment:
+      SPARK_NO_DAEMONIZE: "true"
+    networks:
+      - kafka-network
+    ports:
+      - "7077:7077"
+      - "8080:8080"
+
+  spark-worker:
+    build:
+      context: ../..
+      dockerfile: infra/docker/spark/Dockerfile
+    image: coinbase-spark:local
+    container_name: coinbase-spark-worker-1
+    depends_on:
+      spark-master:
+        condition: service_started
+    command:
+      [
+        "/opt/spark/bin/spark-class",
+        "org.apache.spark.deploy.worker.Worker",
+        "spark://spark-master:7077",
+      ]
+    environment:
+      SPARK_NO_DAEMONIZE: "true"
+      SPARK_WORKER_CORES: "2"
+      SPARK_WORKER_MEMORY: "2g"
+    networks:
+      - kafka-network
+
+  spark-trade-curator:
+    build:
+      context: ../..
+      dockerfile: infra/docker/spark/Dockerfile
+    image: coinbase-spark:local
+    container_name: coinbase-spark-trade-curator
+    depends_on:
+      spark-master:
+        condition: service_started
+      spark-topic-initializer:
+        condition: service_completed_successfully
+      spark-storage-initializer:
+        condition: service_completed_successfully
+    command:
+      [
+        "/opt/spark/bin/spark-submit",
+        "--master",
+        "spark://spark-master:7077",
+        "--conf",
+        "spark.jars.ivy=/opt/spark/checkpoints/ivy",
+        "--packages",
+        "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.5",
+        "/opt/project/trade_curator.py",
+      ]
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka-1:19092,kafka-2:19092,kafka-3:19092
+      RAW_TOPIC: coinbase.raw.trade_batches
+      CURATED_TOPIC: coinbase.curated.trades
+      INVALID_TOPIC: coinbase.invalid.trade_batches
+      CHECKPOINT_ROOT: /opt/spark/checkpoints/trade-curator
+    volumes:
+      - ../../pipelines/spark/trade_curator.py:/opt/project/trade_curator.py:ro
+      - spark-checkpoints:/opt/spark/checkpoints
+    networks:
+      - kafka-network
+    restart: unless-stopped
+
+volumes:
+  spark-checkpoints:
+
+networks:
+  kafka-network:
+    external: true
+    name: coinbase-streaming-network

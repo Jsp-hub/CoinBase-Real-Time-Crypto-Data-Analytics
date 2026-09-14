@@ -1,0 +1,92 @@
+services:
+  flink-topic-initializer:
+    image: apache/kafka:4.3.1
+    networks:
+      - kafka-network
+    depends_on:
+      kafka-1:
+        condition: service_healthy
+      kafka-2:
+        condition: service_healthy
+      kafka-3:
+        condition: service_healthy
+    volumes:
+      - ../kafka/create-flink-topics.sh:/opt/project/create-flink-topics.sh:ro
+    entrypoint: ["/bin/bash", "/opt/project/create-flink-topics.sh"]
+    restart: "no"
+
+  flink-jobmanager:
+    build:
+      context: ../..
+      dockerfile: infra/docker/flink/Dockerfile
+    image: coinbase-flink:local
+    container_name: coinbase-flink-jobmanager
+    command: jobmanager
+    environment:
+      FLINK_PROPERTIES: |
+        jobmanager.rpc.address: flink-jobmanager
+    networks:
+      - kafka-network
+    ports:
+      - "8081:8081"
+
+  flink-taskmanager:
+    build:
+      context: ../..
+      dockerfile: infra/docker/flink/Dockerfile
+    image: coinbase-flink:local
+    container_name: coinbase-flink-taskmanager-1
+    command: taskmanager
+    depends_on:
+      flink-jobmanager:
+        condition: service_started
+    environment:
+      FLINK_PROPERTIES: |
+        jobmanager.rpc.address: flink-jobmanager
+        taskmanager.numberOfTaskSlots: 2
+        taskmanager.memory.process.size: 2048m
+        taskmanager.memory.task.off-heap.size: 512m
+    networks:
+      - kafka-network
+    volumes:
+      - flink-checkpoints:/opt/flink/checkpoints
+
+  flink-candle-analytics:
+    build:
+      context: ../..
+      dockerfile: infra/docker/flink/Dockerfile
+    image: coinbase-flink:local
+    container_name: coinbase-flink-candle-analytics
+    depends_on:
+      flink-jobmanager:
+        condition: service_started
+      flink-taskmanager:
+        condition: service_started
+      flink-topic-initializer:
+        condition: service_completed_successfully
+    command:
+      [
+        "bash",
+        "-c",
+        "/opt/flink/bin/flink run -m flink-jobmanager:8081 -py /opt/project/candle_analytics.py",
+      ]
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka-1:19092,kafka-2:19092,kafka-3:19092
+      CURATED_TOPIC: coinbase.curated.trades
+      CANDLE_TOPIC: coinbase.analytics.candles_1m
+      LATE_TOPIC: coinbase.analytics.late_trades
+      CHECKPOINT_DIR: file:///opt/flink/checkpoints/candle-analytics
+    networks:
+      - kafka-network
+    volumes:
+      - ../../pipelines/flink/candle_analytics.py:/opt/project/candle_analytics.py:ro
+      - flink-checkpoints:/opt/flink/checkpoints
+    restart: "no"
+
+volumes:
+  flink-checkpoints:
+
+networks:
+  kafka-network:
+    external: true
+    name: coinbase-streaming-network

@@ -1,4 +1,16 @@
 services:
+  flink-checkpoint-storage-initializer:
+    image: alpine:3.20
+    command:
+      [
+        "sh",
+        "-c",
+        "mkdir -p /opt/flink/checkpoints/candle-analytics && chown -R 9999:9999 /opt/flink/checkpoints && chmod -R ug+rwX /opt/flink/checkpoints",
+      ]
+    volumes:
+      - flink-checkpoints:/opt/flink/checkpoints
+    restart: "no"
+
   flink-topic-initializer:
     image: apache/kafka:4.3.1
     networks:
@@ -22,6 +34,9 @@ services:
     image: coinbase-flink:local
     container_name: coinbase-flink-jobmanager
     command: jobmanager
+    depends_on:
+      flink-checkpoint-storage-initializer:
+        condition: service_completed_successfully
     environment:
       FLINK_PROPERTIES: |
         jobmanager.rpc.address: flink-jobmanager
@@ -29,6 +44,8 @@ services:
       - kafka-network
     ports:
       - "8081:8081"
+    volumes:
+      - flink-checkpoints:/opt/flink/checkpoints
 
   flink-taskmanager:
     build:

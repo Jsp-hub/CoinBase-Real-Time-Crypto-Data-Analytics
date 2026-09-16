@@ -1,0 +1,30 @@
+services:
+  grafana:
+    image: grafana/grafana:11.6.0
+    container_name: coinbase-grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ../grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - coinbase-streaming-network
+
+volumes:
+  grafana-data:
+    name: coinbase-streaming-grafana-data
+
+networks:
+  coinbase-streaming-network:
+    external: true

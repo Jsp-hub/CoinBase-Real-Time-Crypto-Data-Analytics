@@ -32,7 +32,9 @@ INSERT INTO market_candles_1m (
     base_volume,
     notional_volume_usd,
     vwap,
-    emitted_at
+    emitted_at,
+    candle_status,
+    last_updated_at
 ) VALUES (
     %(product_id)s,
     %(window_start)s,
@@ -45,19 +47,23 @@ INSERT INTO market_candles_1m (
     %(base_volume)s,
     %(notional_volume_usd)s,
     %(vwap)s,
-    %(emitted_at)s
+    %(emitted_at)s,
+    %(candle_status)s,
+    %(last_updated_at)s
 )
 ON DUPLICATE KEY UPDATE
-    window_end = VALUES(window_end),
-    open_price = VALUES(open_price),
-    high_price = VALUES(high_price),
-    low_price = VALUES(low_price),
-    close_price = VALUES(close_price),
-    trade_count = VALUES(trade_count),
-    base_volume = VALUES(base_volume),
-    notional_volume_usd = VALUES(notional_volume_usd),
-    vwap = VALUES(vwap),
-    emitted_at = VALUES(emitted_at)
+    window_end = IF(VALUES(candle_status) = 'FORMING' AND candle_status = 'FINAL', window_end, VALUES(window_end)),
+    open_price = IF(VALUES(candle_status) = 'FORMING' AND candle_status = 'FINAL', open_price, VALUES(open_price)),
+    high_price = IF(VALUES(candle_status) = 'FORMING' AND candle_status = 'FINAL', high_price, VALUES(high_price)),
+    low_price = IF(VALUES(candle_status) = 'FORMING' AND candle_status = 'FINAL', low_price, VALUES(low_price)),
+    close_price = IF(VALUES(candle_status) = 'FORMING' AND candle_status = 'FINAL', close_price, VALUES(close_price)),
+    trade_count = IF(VALUES(candle_status) = 'FORMING' AND candle_status = 'FINAL', trade_count, VALUES(trade_count)),
+    base_volume = IF(VALUES(candle_status) = 'FORMING' AND candle_status = 'FINAL', base_volume, VALUES(base_volume)),
+    notional_volume_usd = IF(VALUES(candle_status) = 'FORMING' AND candle_status = 'FINAL', notional_volume_usd, VALUES(notional_volume_usd)),
+    vwap = IF(VALUES(candle_status) = 'FORMING' AND candle_status = 'FINAL', vwap, VALUES(vwap)),
+    emitted_at = IF(VALUES(candle_status) = 'FORMING' AND candle_status = 'FINAL', emitted_at, VALUES(emitted_at)),
+    last_updated_at = IF(VALUES(candle_status) = 'FORMING' AND candle_status = 'FINAL', last_updated_at, VALUES(last_updated_at)),
+    candle_status = IF(candle_status = 'FINAL' AND VALUES(candle_status) = 'FORMING', 'FINAL', VALUES(candle_status))
 """
 
 
@@ -118,6 +124,10 @@ def parse_candle(message: Message) -> dict[str, object]:
     if not isinstance(trade_count, int) or isinstance(trade_count, bool) or trade_count < 1:
         raise ValueError("trade_count must be a positive integer")
 
+    candle_status = payload.get("candle_status")
+    if candle_status not in ("FORMING", "FINAL"):
+        raise ValueError("candle_status must be FORMING or FINAL")
+
     candle = {
         "product_id": product_id,
         "window_start": parse_utc_timestamp(payload.get("window_start"), "window_start"),
@@ -131,6 +141,11 @@ def parse_candle(message: Message) -> dict[str, object]:
         "notional_volume_usd": parse_decimal(payload, "notional_volume_usd"),
         "vwap": parse_decimal(payload, "vwap"),
         "emitted_at": parse_utc_timestamp(payload.get("emitted_at"), "emitted_at"),
+        "candle_status": candle_status,
+        "last_updated_at": parse_utc_timestamp(
+            payload.get("last_updated_at"),
+            "last_updated_at",
+        ),
     }
 
     if candle["window_end"] <= candle["window_start"]:
@@ -197,7 +212,10 @@ def main() -> None:
         format="%(asctime)s %(levelname)s %(name)s - %(message)s",
     )
     consumer = Consumer(consumer_configuration())
-    topic = environment("KAFKA_TOPIC")
+    topics = (
+        environment("KAFKA_TOPIC"),
+        environment("FORMING_CANDLE_TOPIC"),
+    )
     stop_requested = False
 
     def request_stop(*_: object) -> None:
@@ -207,8 +225,8 @@ def main() -> None:
 
     signal.signal(signal.SIGINT, request_stop)
     signal.signal(signal.SIGTERM, request_stop)
-    consumer.subscribe([topic])
-    LOGGER.info("Consuming %s into MySQL.", topic)
+    consumer.subscribe(list(topics))
+    LOGGER.info("Consuming %s into MySQL.", ", ".join(topics))
 
     try:
         while not stop_requested:

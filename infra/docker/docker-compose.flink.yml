@@ -91,6 +91,7 @@ services:
       KAFKA_BOOTSTRAP_SERVERS: kafka-1:19092,kafka-2:19092,kafka-3:19092
       CURATED_TOPIC: coinbase.curated.trades
       CANDLE_TOPIC: coinbase.analytics.candles_1m
+      FORMING_CANDLE_TOPIC: coinbase.analytics.forming_candles_1m
       LATE_TOPIC: coinbase.analytics.late_trades
       CHECKPOINT_DIR: file:///opt/flink/checkpoints/candle-analytics
     networks:

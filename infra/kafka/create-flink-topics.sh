@@ -22,4 +22,5 @@ create_topic() {
 }
 
 create_topic "coinbase.analytics.candles_1m" 3 3 2
+create_topic "coinbase.analytics.forming_candles_1m" 3 3 2
 create_topic "coinbase.analytics.late_trades" 2 2 2

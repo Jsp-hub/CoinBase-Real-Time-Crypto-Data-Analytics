@@ -39,9 +39,14 @@ services:
         condition: service_completed_successfully
     environment:
       FLINK_PROPERTIES: |
+        metrics.reporters: prom
+        metrics.reporter.prom.factory.class: org.apache.flink.metrics.prometheus.PrometheusReporterFactory
+        metrics.reporter.prom.port: 9249
         jobmanager.rpc.address: flink-jobmanager
     networks:
-      - kafka-network
+      kafka-network:
+        aliases:
+          - flink-jobmanager-metrics
     ports:
       - "8081:8081"
     volumes:
@@ -59,12 +64,17 @@ services:
         condition: service_started
     environment:
       FLINK_PROPERTIES: |
+        metrics.reporters: prom
+        metrics.reporter.prom.factory.class: org.apache.flink.metrics.prometheus.PrometheusReporterFactory
+        metrics.reporter.prom.port: 9249
         jobmanager.rpc.address: flink-jobmanager
         taskmanager.numberOfTaskSlots: 2
         taskmanager.memory.process.size: 2048m
         taskmanager.memory.task.off-heap.size: 512m
     networks:
-      - kafka-network
+      kafka-network:
+        aliases:
+          - flink-taskmanager-metrics
     volumes:
       - flink-checkpoints:/opt/flink/checkpoints
 

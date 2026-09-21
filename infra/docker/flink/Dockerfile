@@ -17,3 +17,4 @@ RUN apt-get update \
       https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/3.7.0/kafka-clients-3.7.0.jar
 
 COPY pipelines/flink/candle_analytics.py /opt/project/candle_analytics.py
+ADD --chmod=644 https://repo.maven.apache.org/maven2/org/apache/flink/flink-metrics-prometheus/1.20.1/flink-metrics-prometheus-1.20.1.jar /opt/flink/lib/flink-metrics-prometheus-1.20.1.jar

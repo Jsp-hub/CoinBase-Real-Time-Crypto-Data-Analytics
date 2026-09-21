@@ -1,0 +1,51 @@
+services:
+  prometheus:
+    image: prom/prometheus:v3.3.0
+    container_name: coinbase-prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=15d
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    networks:
+      - kafka-network
+
+  cadvisor:
+    image: ghcr.io/google/cadvisor:v0.60.6
+    container_name: coinbase-cadvisor
+    privileged: true
+    command:
+      - --docker_only=true
+      - --store_container_labels=false
+      - --whitelisted_container_labels=com.docker.compose.service
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - kafka-network
+
+  kafka-exporter:
+    image: danielqsj/kafka-exporter:v1.9.0
+    container_name: coinbase-kafka-exporter
+    restart: unless-stopped
+    command:
+      - --kafka.server=kafka-1:19092
+      - --kafka.server=kafka-2:19092
+      - --kafka.server=kafka-3:19092
+      - --web.listen-address=:9308
+    networks:
+      - kafka-network
+
+volumes:
+  prometheus-data:
+
+networks:
+  kafka-network:
+    external: true
+    name: coinbase-streaming-network

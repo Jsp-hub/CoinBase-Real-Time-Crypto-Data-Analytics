@@ -47,11 +47,17 @@ services:
       ]
     environment:
       SPARK_NO_DAEMONIZE: "true"
+      SPARK_MASTER_OPTS: "-Dspark.metrics.conf=/opt/spark/conf/metrics.properties"
+      SPARK_DAEMON_JAVA_OPTS: "-Dspark.ui.prometheus.enabled=true"
     networks:
-      - kafka-network
+      kafka-network:
+        aliases:
+          - spark-master-metrics
     ports:
       - "7077:7077"
       - "8080:8080"
+    volumes:
+      - ./spark/metrics.properties:/opt/spark/conf/metrics.properties:ro
 
   spark-worker:
     build:
@@ -72,10 +78,15 @@ services:
       SPARK_NO_DAEMONIZE: "true"
       SPARK_WORKER_CORES: "2"
       SPARK_WORKER_MEMORY: "2g"
+      SPARK_WORKER_OPTS: "-Dspark.metrics.conf=/opt/spark/conf/metrics.properties"
+      SPARK_DAEMON_JAVA_OPTS: "-Dspark.ui.prometheus.enabled=true"
     networks:
-      - kafka-network
+      kafka-network:
+        aliases:
+          - spark-worker-metrics
     volumes:
       - spark-checkpoints:/opt/spark/checkpoints
+      - ./spark/metrics.properties:/opt/spark/conf/metrics.properties:ro
 
   spark-trade-curator:
     build:
@@ -96,7 +107,15 @@ services:
         "--master",
         "spark://spark-master:7077",
         "--conf",
+        "spark.metrics.conf=/opt/spark/conf/metrics.properties",
+        "--conf",
+        "spark.ui.prometheus.enabled=true",
+        "--conf",
+        "spark.metrics.namespace=coinbase_trade_curator",
+        "--conf",
         "spark.jars.ivy=/opt/spark/checkpoints/ivy",
+        "--conf",
+        "spark.sql.streaming.metricsEnabled=true",
         "--packages",
         "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.5",
         "/opt/project/trade_curator.py",
@@ -110,8 +129,11 @@ services:
     volumes:
       - ../../pipelines/spark/trade_curator.py:/opt/project/trade_curator.py:ro
       - spark-checkpoints:/opt/spark/checkpoints
+      - ./spark/metrics.properties:/opt/spark/conf/metrics.properties:ro
     networks:
-      - kafka-network
+      kafka-network:
+        aliases:
+          - spark-trade-curator-metrics
     restart: unless-stopped
 
 volumes:

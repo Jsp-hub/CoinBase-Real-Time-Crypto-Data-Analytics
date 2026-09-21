@@ -13,11 +13,29 @@ from decimal import Decimal, InvalidOperation
 import mysql.connector
 from confluent_kafka import Consumer, KafkaError, Message
 from mysql.connector import Error as MySQLError
+from prometheus_client import Counter, Gauge, Histogram, start_http_server
 
 
 LOGGER = logging.getLogger(__name__)
 UTC = timezone.utc
 RETRY_DELAY_SECONDS = 5
+
+MYSQL_CANDLES_UPSERTED_TOTAL = Counter(
+    "coinbase_mysql_writer_candles_upserted_total",
+    "Number of candle records committed to MySQL.",
+)
+MYSQL_UPSERT_FAILURES_TOTAL = Counter(
+    "coinbase_mysql_writer_upsert_failures_total",
+    "Number of failed MySQL candle upsert attempts.",
+)
+MYSQL_LAST_SUCCESSFUL_WRITE_UNIXTIME = Gauge(
+    "coinbase_mysql_writer_last_successful_write_unixtime",
+    "Unix timestamp of the latest successful MySQL candle commit.",
+)
+MYSQL_WRITE_DURATION_SECONDS = Histogram(
+    "coinbase_mysql_writer_write_duration_seconds",
+    "Duration of successful MySQL candle upserts, including connection and commit.",
+)
 
 UPSERT_CANDLE = """
 INSERT INTO market_candles_1m (
@@ -173,13 +191,18 @@ def write_candle_with_retry(candle: dict[str, object]) -> None:
     while True:
         connection: mysql.connector.MySQLConnection | None = None
         cursor = None
+        write_started_at = time.monotonic()
         try:
             connection = database_connection()
             cursor = connection.cursor()
             cursor.execute(UPSERT_CANDLE, candle)
             connection.commit()
+            MYSQL_WRITE_DURATION_SECONDS.observe(time.monotonic() - write_started_at)
+            MYSQL_CANDLES_UPSERTED_TOTAL.inc()
+            MYSQL_LAST_SUCCESSFUL_WRITE_UNIXTIME.set(time.time())
             return
         except MySQLError:
+            MYSQL_UPSERT_FAILURES_TOTAL.inc()
             LOGGER.exception(
                 "MySQL write failed; retrying the same Kafka message in %s seconds.",
                 RETRY_DELAY_SECONDS,
@@ -211,6 +234,9 @@ def main() -> None:
         level=os.getenv("LOG_LEVEL", "INFO").upper(),
         format="%(asctime)s %(levelname)s %(name)s - %(message)s",
     )
+    metrics_port = int(environment("METRICS_PORT", "9400"))
+    start_http_server(metrics_port)
+    LOGGER.info("MySQL writer Prometheus metrics available on port %s.", metrics_port)
     consumer = Consumer(consumer_configuration())
     topics = (
         environment("KAFKA_TOPIC"),

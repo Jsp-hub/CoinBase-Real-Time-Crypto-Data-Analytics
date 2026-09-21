@@ -38,6 +38,7 @@ services:
       KAFKA_TOPIC: coinbase.analytics.candles_1m
       FORMING_CANDLE_TOPIC: coinbase.analytics.forming_candles_1m
       KAFKA_GROUP_ID: mysql-candle-writer-v1
+      METRICS_PORT: "9400"
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_PORT: ${MYSQL_PORT}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -49,7 +50,9 @@ services:
       mysql-schema-migrator:
         condition: service_completed_successfully
     networks:
-      - coinbase-streaming-network
+      coinbase-streaming-network:
+        aliases:
+          - mysql-candle-writer-metrics
 
   mysql-schema-migrator:
     image: mysql:8.4
